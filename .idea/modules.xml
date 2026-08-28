@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Urna/Urna.iml" filepath="$PROJECT_DIR$/Urna/Urna.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Urna-Eletronica.iml" filepath="$PROJECT_DIR$/.idea/Urna-Eletronica.iml" />
     </modules>
   </component>
