@@ -1,39 +1,32 @@
-public class Pessoa {
+import java.time.LocalDate;
+import java.time.Period;
+
+public abstract class Pessoa {
     private String nome;
-    private int idade;
+    private LocalDate dataNascimento;
     private String CPF;
 
-    public Pessoa(String nome, int idade, String CPF){
+    public Pessoa(String nome, String CPF, LocalDate dataNascimento) {
         this.nome = nome;
-        setIdade(idade);
         this.CPF = CPF;
+        this.dataNascimento = dataNascimento;
+    }
+
+    public int getIdade(){
+        return Period.between(dataNascimento, LocalDate.now()).getYears();
+    }
+    public boolean isElegivel(){
+        return getIdade() >= 16;
     }
 
     public String getNome() {
         return nome;
     }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public void setIdade(int idade) {
-        if(this.idade <=15){
-            throw new IllegalArgumentException("idade deve ser maior ou igual a 16 para votar!!");
-        }else{
-            this.idade = idade;
-        }
-    }
-
     public String getCPF() {
         return CPF;
     }
-
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
+
 }
