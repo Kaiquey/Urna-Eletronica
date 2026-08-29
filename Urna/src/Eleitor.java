@@ -1,4 +1,4 @@
-public class Eleitor extends Pessoa{
+public class Eleitor{
 
 
 }
