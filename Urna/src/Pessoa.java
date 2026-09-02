@@ -15,9 +15,6 @@ public abstract class Pessoa {
     public int getIdade(){
         return Period.between(dataNascimento, LocalDate.now()).getYears();
     }
-    public boolean isElegivel(){
-        return getIdade() >= 16;
-    }
 
     public String getNome() {
         return nome;
