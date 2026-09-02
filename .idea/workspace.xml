@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1e87d44f-bf10-448f-bdb0-1ea3205241ab" name="Changes" comment="Definindo a classe abstrata">
+      <change beforePath="$PROJECT_DIR$/Urna/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Urna/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Urna/src/Pessoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/Urna/src/Pessoa.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Kaiquey&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Kaiquey/Urna-Eletronica.git&quot;,
+    &quot;accountId&quot;: &quot;51eba408-093d-43e8-85ec-09caf6cf3714&quot;
+  }
+}</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.7258337560445032" />
+      <entry key="MS500" value="5.074915763600465" />
+      <entry key="S2" value="10.65476369244903" />
+      <entry key="S5" value="14.158929324374284" />
+      <entry key="S10" value="15.875395526815279" />
+      <entry key="S30" value="17.672732685816886" />
+      <entry key="S60" value="19.399568914257532" />
+      <entry key="M2" value="23.04324818956802" />
+      <entry key="M5" value="40.65645881528404" />
+      <entry key="M10" value="62.67713460280287" />
+      <entry key="M15" value="74.89064483736534" />
+      <entry key="M30" value="91.24872181007669" />
+      <entry key="H1" value="106.37571417117184" />
+      <entry key="H2" value="129.84654475084017" />
+      <entry key="H4" value="157.8286427893884" />
+      <entry key="D1" value="200.93793942817408" />
+      <entry key="W1" value="211.18864773956147" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="2.9088386854975675E-119" />
+      <entry key="S5" value="3.8502406882125465E-48" />
+      <entry key="S10" value="1.96266653417678E-24" />
+      <entry key="S30" value="1.3293272404009235E-8" />
+      <entry key="S60" value="1.3970954582953005E-4" />
+      <entry key="M2" value="0.015852238282835822" />
+      <entry key="M5" value="0.28479804205120074" />
+      <entry key="M10" value="0.752901486551275" />
+      <entry key="M15" value="1.04227349038722" />
+      <entry key="M30" value="1.4698857650670127" />
+      <entry key="H1" value="2.1419918894549546" />
+      <entry key="H2" value="3.7053413005508467" />
+      <entry key="H4" value="5.768524152825657" />
+      <entry key="D1" value="9.065020960671621" />
+      <entry key="W1" value="9.859343785685907" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.676125362684025" />
+      <entry key="MS500" value="5.041996424369894" />
+      <entry key="S2" value="10.610999822765825" />
+      <entry key="S5" value="14.124323293209942" />
+      <entry key="S10" value="15.853102758080995" />
+      <entry key="S30" value="17.65893152420362" />
+      <entry key="S60" value="19.385285196724745" />
+      <entry key="M2" value="23.044944517174674" />
+      <entry key="M5" value="40.91967086419694" />
+      <entry key="M10" value="63.40669362845851" />
+      <entry key="M15" value="75.91225186571705" />
+      <entry key="M30" value="92.70467965652276" />
+      <entry key="H1" value="108.50909553943556" />
+      <entry key="H2" value="133.54639545795024" />
+      <entry key="H4" value="163.59374214337768" />
+      <entry key="D1" value="210.0022187155646" />
+      <entry key="W1" value="221.04787982092148" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3IZ1bmt8kQUBGXeD5eK0fKqJ9SD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Coverage",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/Administrator/IdeaProjects/Urna-Eletronica/Main/src/Main.java",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Urna-Eletronica" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Urna-Eletronica" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-34e2839f716b-intellij.indexing.shared.core-IU-262.9437.185" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.9437.185" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1e87d44f-bf10-448f-bdb0-1ea3205241ab" name="Changes" comment="" />
+      <created>1787957351193</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1787957351193</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="up" />
+    <MESSAGE value="Remoção de pasta" />
+    <MESSAGE value="Up" />
+    <MESSAGE value="Update classes" />
+    <MESSAGE value="Atualização de pastas e criação de classes" />
+    <MESSAGE value="Removendo IML" />
+    <MESSAGE value="Definindo a classe abstrata" />
+    <option name="LAST_COMMIT_MESSAGE" value="Definindo a classe abstrata" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
