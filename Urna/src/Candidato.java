@@ -1,12 +1,14 @@
-public class Candidato{
+import java.time.LocalDate;
+
+public class Candidato extends Pessoa{
     private final int id;
     private final String Partido;
 
-    public Candidato(String nome, String cpf, LocalDate dataNascimento, int id,String Partido) {
+    public Candidato(String nome, String cpf, LocalDate dataNascimento, int id, String Partido) {
         super(nome,cpf,dataNascimento);
         if(id<=0){
             throw new IllegalArgumentException("O número do canditado não pode ser nulo ou negativo!");
-        }if(partido ==null || partido.isBlank()){
+        }if(Partido == null || Partido.isBlank()){
             throw new IllegalArgumentException("a filiação partidária deste candidato é obrigatória!!");
         }
         this.id = id;
