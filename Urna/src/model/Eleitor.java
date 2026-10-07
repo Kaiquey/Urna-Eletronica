@@ -1,6 +1,8 @@
+package model;
+
 import java.time.LocalDate;
 
-public class Eleitor extends Pessoa{
+public class Eleitor extends Pessoa {
     private String tituloEleitor;
     private boolean voto;
 

@@ -1,6 +1,8 @@
+package model;
+
 import java.time.LocalDate;
 
-public class Candidato extends Pessoa{
+public class Candidato extends Pessoa {
     private final int id;
     private final String Partido;
 
