@@ -1,3 +1,5 @@
+package view;
+
 import exception.EleitorInaptoException;
 import model.Candidato;
 import model.Eleitor;
@@ -9,9 +11,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+public class UrnaView {
 
-private static final DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    void main() {
+    private static final DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    public static void main(String[] args) {
         UrnaEletronica urna = new UrnaEletronica();
         List<Eleitor> eleitores = new ArrayList<>();
         boolean execut = true;
@@ -35,29 +39,32 @@ private static final DateTimeFormatter dataFormatada = DateTimeFormatter.ofPatte
                     case 3 -> realizarVotacao(urna, eleitores);
                     case 4 -> emitirBoletim(urna);
                     case 0 -> execut = false;
-                    default -> JOptionPane.showMessageDialog(null, "Opção inválida!", "Aviso!!", JOptionPane.WARNING_MESSAGE);
+                    default ->
+                            JOptionPane.showMessageDialog(null, "Opção inválida!", "Aviso!!", JOptionPane.WARNING_MESSAGE);
                 }
-            }catch (NumberFormatException err) {
+            } catch (NumberFormatException err) {
                 JOptionPane.showMessageDialog(null, "Digite apenas números no menu!!");
-            }catch (Exception e){
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(), "Erro de Validação", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
-        private static void cadastrarCandidato(UrnaEletronica urna){
-            String nome = JOptionPane.showInputDialog("Nome do Candidato:");
-            String cpf = JOptionPane.showInputDialog("CPF do Candidato:");
-            String nascimento = JOptionPane.showInputDialog("Nascimento do Candidato (dd/mm/aaaa):");
-            LocalDate dataNasc = LocalDate.parse(nascimento, dataFormatada);
-            int numero = Integer.parseInt(JOptionPane.showInputDialog("Numero do Candidato:"));
-            String partido = JOptionPane.showInputDialog("Partido do Candidato:");
 
-            Candidato candidato = new Candidato(nome, cpf, dataNasc, numero, partido);
-            urna.cadastraCandidato(candidato);
+    private static void cadastrarCandidato(UrnaEletronica urna) {
+        String nome = JOptionPane.showInputDialog("Nome do Candidato:");
+        String cpf = JOptionPane.showInputDialog("CPF do Candidato:");
+        String nascimento = JOptionPane.showInputDialog("Nascimento do Candidato (dd/mm/aaaa):");
+        LocalDate dataNasc = LocalDate.parse(nascimento, dataFormatada);
+        int numero = Integer.parseInt(JOptionPane.showInputDialog("Numero do Candidato:"));
+        String partido = JOptionPane.showInputDialog("Partido do Candidato:");
 
-            JOptionPane.showMessageDialog(null, "Candidato cadastrado com sucesso!\n");
+        Candidato candidato = new Candidato(nome, cpf, dataNasc, numero, partido);
+        urna.cadastraCandidato(candidato);
+
+        JOptionPane.showMessageDialog(null, "Candidato cadastrado com sucesso!\n");
     }
-    private static void cadastrarEleitor(List<Eleitor> eleitores){
+
+    private static void cadastrarEleitor(List<Eleitor> eleitores) {
         try {
             String nome = JOptionPane.showInputDialog("Nome do Eleitor:");
             String cpf = JOptionPane.showInputDialog("CPF do Eleitor:");
@@ -68,25 +75,26 @@ private static final DateTimeFormatter dataFormatada = DateTimeFormatter.ofPatte
             Eleitor eleitor = new Eleitor(nome, cpf, dataNasc, titulo);
             eleitores.add(eleitor);
 
-            String msg = "Eleitor cadastrado com sucesso!\n" +eleitor.getStatus().getDescricao();
+            String msg = "Eleitor cadastrado com sucesso!\n" + eleitor.getStatus().getDescricao();
             JOptionPane.showMessageDialog(null, msg);
-        }catch(IllegalArgumentException err){
-            JOptionPane.showMessageDialog(null, err.getMessage(),"Dados do Eleitor estão inválidos!", JOptionPane.WARNING_MESSAGE);
+        } catch (IllegalArgumentException err) {
+            JOptionPane.showMessageDialog(null, err.getMessage(), "Dados do Eleitor estão inválidos!", JOptionPane.WARNING_MESSAGE);
         }
     }
+
     private static void realizarVotacao(UrnaEletronica urna, List<Eleitor> eleitores) {
-        if(eleitores.isEmpty()){
-            JOptionPane.showMessageDialog(null,"nenhum eleitor cadastrado!");
+        if (eleitores.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "nenhum eleitor cadastrado!");
             return;
         }
         String titulo = JOptionPane.showInputDialog("Informe o Título de eleitor para votar (ex: 123456789102");
-        Eleitor eleitor = eleitores.stream().filter(e->e.getTituloEleitor().equals(titulo)).findFirst().orElse(null);
-        if(eleitor == null){
-            JOptionPane.showMessageDialog(null,"Eleitor não foi encontrado", "Erro",JOptionPane.WARNING_MESSAGE);
+        Eleitor eleitor = eleitores.stream().filter(e -> e.getTituloEleitor().equals(titulo)).findFirst().orElse(null);
+        if (eleitor == null) {
+            JOptionPane.showMessageDialog(null, "Eleitor não foi encontrado", "Erro", JOptionPane.WARNING_MESSAGE);
             return;
         }
         StringBuilder options = new StringBuilder();
-        for(Candidato c : urna.getCandidatosCadastros()){
+        for (Candidato c : urna.getCandidatosCadastros()) {
             options.append(c).append("\n");
         }
         options.append("0 - Voto em Branco\n");
@@ -97,7 +105,7 @@ private static final DateTimeFormatter dataFormatada = DateTimeFormatter.ofPatte
         try {
             urna.registrarVoto(eleitor, numeroVoto);
             JOptionPane.showMessageDialog(null, "Voto foi registrado com sucesso! Obrigado pelo voto ");
-        }catch (EleitorInaptoException e){
+        } catch (EleitorInaptoException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Eleitor Inapto", JOptionPane.WARNING_MESSAGE);
         }
     }
@@ -105,12 +113,13 @@ private static final DateTimeFormatter dataFormatada = DateTimeFormatter.ofPatte
     private static void emitirBoletim(UrnaEletronica urna) {
         StringBuilder boletim = new StringBuilder();
 
-        for(Candidato c : urna.getCandidatosCadastros()){
+        for (Candidato c : urna.getCandidatosCadastros()) {
             boletim.append(c.getNome()).append(" ").append(c.getPartido()).append(": ").append(urna.getVotoCandidato(c.getId())).append(" votos\n");
         }
 
         boletim.append("\n Votos em branco: ").append(urna.getVotoBranco());
         boletim.append("\n Votos nulos: ").append(urna.getVotoNulo());
         boletim.append("\n Votos gerais: ").append(urna.getTotalVotos());
-        JOptionPane.showMessageDialog(null,boletim.toString(), "Apuração de Urna", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, boletim.toString(), "Apuração de Urna", JOptionPane.INFORMATION_MESSAGE);
     }
+}
