@@ -5,7 +5,7 @@ plugins {
 
 launch4j {
     mainClassName = "com.exemplo.service.UrnaView"
-    jar = tasks.jar.get().archiveFile.get().asFile.absolutePath
+    jar.set(tasks.jar.flatMap { it.archiveFile }.map { it.asFile.absolutePath })
     outfile = "Urna.exe"
     dontWrapJar = false
     headerType = "gui" 
