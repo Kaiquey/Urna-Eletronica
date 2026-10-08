@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 public abstract class Pessoa {
-    private  String nome;
+    private String nome;
     private final LocalDate dataNascimento;
     private String CPF;
 

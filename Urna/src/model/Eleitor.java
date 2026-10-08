@@ -4,23 +4,47 @@ import java.time.LocalDate;
 
 public class Eleitor extends Pessoa {
     private String tituloEleitor;
-    private boolean voto;
+    private StatusEleitoral status;
 
     public Eleitor(String nome, String cpf, LocalDate dataNascimento, String tituloEleitor){
         super(nome, cpf, dataNascimento);
-        this.tituloEleitor = tituloEleitor;
-        this.voto = false;
+        setTituloEleitor(tituloEleitor);
+        validarElegibilidade();
     }
 
-    public String getTituloEleitor() {
+    private void validarElegibilidade(){
+        if(getIdade() < 16){
+            this.status = StatusEleitoral.INAPTO;
+        }else{
+            this.status = StatusEleitoral.APTO;
+        }
+    }
+
+    public void registrarVoto(){
+        if(this.status == StatusEleitoral.INAPTO){
+            throw new IllegalStateException("Eleitor menor de 16 anos não pode votar");
+        }
+        if(this.status == StatusEleitoral.JA_Votei){
+            throw new IllegalStateException("Eleitor ja realizou voto nessa sessão!!");
+        }
+        this.status = StatusEleitoral.APTO;
+    }
+
+    public StatusEleitoral getStatus(){
+        return status;
+    }
+    public boolean aptoVoto(){
+        return this.status == StatusEleitoral.APTO;
+    }
+
+    public String getTituloEleitor(){
         return tituloEleitor;
     }
-    public void setTituloEleitor(String tituloEleitor) {
+
+    public void setTituloEleitor(String tituloEleitor){
+        if(tituloEleitor == null || tituloEleitor.isBlank()){
+        throw new IllegalArgumentException("O titulo de eleitor é obrigatório.");
+        }
         this.tituloEleitor = tituloEleitor;
     }
-    public boolean isVoto() {
-        return voto;
-    }
-    public void setVoto(boolean voto) {}
-
 }
