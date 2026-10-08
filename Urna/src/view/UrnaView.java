@@ -1,5 +1,3 @@
-package view;
-
 import exception.EleitorInaptoException;
 import model.Candidato;
 import model.Eleitor;
