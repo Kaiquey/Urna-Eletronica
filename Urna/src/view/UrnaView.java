@@ -57,4 +57,60 @@ private static final DateTimeFormatter dataFormatada = DateTimeFormatter.ofPatte
 
             JOptionPane.showMessageDialog(null, "Candidato cadastrado com sucesso!\n");
     }
+    private static void cadastrarEleitor(List<Eleitor> eleitores){
+        try {
+            String nome = JOptionPane.showInputDialog("Nome do Eleitor:");
+            String cpf = JOptionPane.showInputDialog("CPF do Eleitor:");
+            String nascimento = JOptionPane.showInputDialog("Nascimento do Eleitor:");
+            LocalDate dataNasc = LocalDate.parse(nascimento, dataFormatada);
+            String titulo = JOptionPane.showInputDialog("Título de Eleitor");
 
+            Eleitor eleitor = new Eleitor(nome, cpf, dataNasc, titulo);
+            eleitores.add(eleitor);
+
+            String msg = "Eleitor cadastrado com sucesso!\n" +eleitor.getStatus().getDescricao();
+            JOptionPane.showMessageDialog(null, msg);
+        }catch(IllegalArgumentException err){
+            JOptionPane.showMessageDialog(null, err.getMessage(),"Dados do Eleitor estão inválidos!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    private static void realizarVotacao(UrnaEletronica urna, List<Eleitor> eleitores) {
+        if(eleitores.isEmpty()){
+            JOptionPane.showMessageDialog(null,"nenhum eleitor cadastrado!");
+            return;
+        }
+        String titulo = JOptionPane.showInputDialog("Informe o Título de eleitor para votar (ex: 123456789102");
+        Eleitor eleitor = eleitores.stream().filter(e->e.getTituloEleitor().equals(titulo)).findFirst().orElse(null);
+        if(eleitor == null){
+            JOptionPane.showMessageDialog(null,"Eleitor não foi encontrado", "Erro",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        StringBuilder options = new StringBuilder();
+        for(Candidato c : urna.getCandidatosCadastros()){
+            options.append(c).append("\n");
+        }
+        options.append("0 - Voto em Branco\n");
+        options.append("Qualquer outro número - Voto Nulo\n\n");
+        options.append("Digite o número do seu voto:");
+
+        int numeroVoto = Integer.parseInt(JOptionPane.showInputDialog(null, options.toString()));
+        try {
+            urna.registrarVoto(eleitor, numeroVoto);
+            JOptionPane.showMessageDialog(null, "Voto foi registrado com sucesso! Obrigado pelo voto ");
+        }catch (EleitorInaptoException e){
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Eleitor Inapto", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private static void emitirBoletim(UrnaEletronica urna) {
+        StringBuilder boletim = new StringBuilder();
+
+        for(Candidato c : urna.getCandidatosCadastros()){
+            boletim.append(c.getNome()).append(" ").append(c.getPartido()).append(": ").append(urna.getVotoCandidato(c.getId())).append(" votos\n");
+        }
+
+        boletim.append("\n Votos em branco: ").append(urna.getVotoBranco());
+        boletim.append("\n Votos nulos: ").append(urna.getVotoNulo());
+        boletim.append("\n Votos gerais: ").append(urna.getTotalVotos());
+        JOptionPane.showMessageDialog(null,boletim.toString(), "Apuração de Urna", JOptionPane.INFORMATION_MESSAGE);
+    }
