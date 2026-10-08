@@ -5,7 +5,6 @@ import exception.votoInvalidoException;
 
 import model.Candidato;
 import model.Eleitor;
-import model.Eleitor;
 import model.StatusEleitoral;
 
 import java.util.ArrayList;
