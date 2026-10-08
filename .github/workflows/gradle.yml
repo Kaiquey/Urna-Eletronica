@@ -22,7 +22,7 @@ jobs:
       - name: Dar permissão e rodar o Gradle para gerar o executável
         shell: pwsh
         run: |
-          ./gradlew createLaunch4j
+          gradlew createLaunch4j
 
       - name: Salvar o .exe como artefato
         uses: actions/upload-artifact@v4
