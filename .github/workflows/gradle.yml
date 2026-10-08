@@ -18,7 +18,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-
+          
+      - name: Gerar o Gradle Wrapper
+        shell: pwsh
+        run: gradle wrapper
+      
       - name: Dar permissão e rodar o Gradle para gerar o executável
         shell: pwsh
         run: |
