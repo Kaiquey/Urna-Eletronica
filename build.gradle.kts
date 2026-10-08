@@ -4,9 +4,15 @@ plugins {
 }
 
 launch4j {
-    mainClassName = "com.exemplo.service.UrnaView"
-    jar.set(tasks.jar.flatMap { it.archiveFile }.map { it.asFile.absolutePath })
-    outfile = "Urna.exe"
-    dontWrapJar = false
-    headerType = "gui" 
+    mainClassName = "view.UrnaView"
+    outfile = "Urna-Eletronica.exe"
+    headerType = "gui"
+}
+
+sourceSets {
+    main {
+        java {
+            setSrcDirs(listOf("Urna/src")) /
+        }
+    }
 }

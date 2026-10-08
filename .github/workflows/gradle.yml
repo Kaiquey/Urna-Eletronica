@@ -3,7 +3,12 @@ name: Compile App
 on:
   push:
     branches: [ main ]
+     tags:
+      - 'v*' # Dispara apenas quando você envia uma tag (ex: v1.0.0, v1.0.1)
   workflow_dispatch:
+
+permissions:
+  contents: write # Obrigatório para que o workflow tenha permissão de criar a Release
 
 jobs:
   build:
@@ -20,16 +25,27 @@ jobs:
           java-version: '17'
           
       - name: Gerar o Gradle Wrapper
-        shell: pwsh
-        run: gradle wrapper
+        shell: powershell
+        run: gradle wrapper --gradle-version 8.7
       
       - name: Dar permissão e rodar o Gradle para gerar o executável
-        shell: pwsh
-        run: |
-          gradlew createLaunch4j
-
+        shell: powershell
+        run: .\gradlew.bat createExe
+        
       - name: Salvar o .exe como artefato
+        if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v4
         with:
           name: meu-executavel
           path: build/launch4j/*.exe
+        
+      - name: Publicar no GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/launch4j/Urna-Eletronica.exe
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
