@@ -12,7 +12,7 @@ launch4j {
 sourceSets {
     main {
         java {
-            setSrcDirs(listOf("Urna/src")) /
+            setSrcDirs(listOf("Urna/src"))
         }
     }
 }
