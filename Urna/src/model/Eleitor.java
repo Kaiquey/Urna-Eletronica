@@ -47,7 +47,7 @@ public class Eleitor extends Pessoa {
         }
         String format = tituloEleitor.replaceAll("[^0-9]", "");
         if(!format.matches("\\d{12}")){
-            throw new IllegalArgumentException("O título de eleitor deve conter apenas 12 digitos.");
+            throw new IllegalArgumentException("O título de eleitor deve conter apenas 12 dígitos.");
         }
         this.tituloEleitor = format;
     }
