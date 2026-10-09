@@ -24,7 +24,6 @@ public class Candidato extends Pessoa {
     public String getPartido() {
         return partido;
     }
-
     public void setId(int id) {
         if(id <=0){
             throw new IllegalArgumentException("O número do candidato deve ser maior que zero!");
