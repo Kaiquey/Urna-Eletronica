@@ -31,7 +31,7 @@ public abstract class Pessoa {
         if(CPF == null || CPF.isBlank()) {
             throw new IllegalArgumentException("O cpf não pode ser nulo ou vazio");
         }
-        String formatedCPF = CPF.replace("\\D", "");
+        String formatedCPF = CPF.replaceAll("[^0-9]", "");
         if(!formatedCPF.matches("\\d{11}")){
             throw new IllegalArgumentException("O cpf deve conter exatamente 11 dígitos");
         }
