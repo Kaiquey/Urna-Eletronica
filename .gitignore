@@ -25,3 +25,5 @@ replay_pid*
 .out
 .idea
 Urna/Urna.iml
+.gradle
+build
