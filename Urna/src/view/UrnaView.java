@@ -112,7 +112,7 @@ public class UrnaView {
         StringBuilder boletim = new StringBuilder();
 
         for (Candidato c : urna.getCandidatosCadastros()) {
-            boletim.append(c.getNome()).append(" ").append(c.getPartido()).append(": ").append(urna.getVotoCandidato(c.getId())).append(" votos\n");
+            boletim.append("O candidato: \n").append(c.getNome()).append(" do ").append(c.getPartido()).append(": ").append("possui ").append(urna.getVotoCandidato(c.getId())).append(" votos\n");
         }
 
         boletim.append("\n Votos em branco: ").append(urna.getVotoBranco());
