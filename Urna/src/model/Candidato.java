@@ -11,7 +11,7 @@ public class Candidato extends Pessoa {
         setId(id);
         setPartido(Partido);
         if(id<=0){
-            throw new IllegalArgumentException("O número do canditado não pode ser nulo ou negativo!");
+            throw new IllegalArgumentException("O número do candidato não pode ser nulo ou negativo!");
         }if(Partido == null || Partido.isBlank()){
             throw new IllegalArgumentException("a filiação partidária deste candidato é obrigatória!!");
         }
