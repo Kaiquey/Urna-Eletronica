@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Candidato extends Pessoa {
     private  int id;
-    private  String Partido;
+    private  String partido;
 
     public Candidato(String nome, String cpf, LocalDate dataNascimento, int id, String Partido) {
         super(nome,cpf,dataNascimento);
@@ -16,13 +16,13 @@ public class Candidato extends Pessoa {
             throw new IllegalArgumentException("a filiação partidária deste candidato é obrigatória!!");
         }
         this.id = id;
-        this.Partido = Partido;
+        this.partido = Partido;
     }
     public int getId() {
         return id;
     }
     public String getPartido() {
-        return Partido;
+        return partido;
     }
 
     public void setId(int id) {
@@ -35,13 +35,13 @@ public class Candidato extends Pessoa {
         if(Partido == null || Partido.isBlank()){
             throw new IllegalArgumentException("A filiação partidária é obrigatória!!");
         }
-        this.Partido = Partido;
+        this.partido = Partido;
    }
 
 
     @Override
     public String toString() {
-        return String.format("%d - %s (%s)", this.id, getNome(), this.Partido);
+        return String.format("%d - %s (%s)", this.id, getNome(), this.partido);
     }
 
 }

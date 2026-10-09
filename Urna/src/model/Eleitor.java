@@ -27,7 +27,7 @@ public class Eleitor extends Pessoa {
         if(this.status == StatusEleitoral.JA_Votei){
             throw new IllegalStateException("Eleitor ja realizou voto nessa sessão!!");
         }
-        this.status = StatusEleitoral.APTO;
+        this.status = StatusEleitoral.JA_Votei;
     }
 
     public StatusEleitoral getStatus(){
