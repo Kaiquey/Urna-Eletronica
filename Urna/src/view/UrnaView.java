@@ -1,3 +1,5 @@
+package view;
+
 import exception.EleitorInaptoException;
 import model.Candidato;
 import model.Eleitor;
@@ -25,7 +27,7 @@ public class UrnaView {
                     3. Votar
                     4. Emitir Boletim de Urna
                     0. Sair
-                    Escolha uma opção:                 
+                    Escolha uma opção:
                     """;
             String opcao = JOptionPane.showInputDialog(null, menu, "Menu Principal", JOptionPane.QUESTION_MESSAGE);
             if (opcao == null) break;
@@ -49,17 +51,24 @@ public class UrnaView {
     }
 
     private static void cadastrarCandidato(UrnaEletronica urna) {
-        String nome = JOptionPane.showInputDialog("Nome do Candidato:");
-        String cpf = JOptionPane.showInputDialog("CPF do Candidato:");
-        String nascimento = JOptionPane.showInputDialog("Nascimento do Candidato (dd/mm/aaaa):");
-        LocalDate dataNasc = LocalDate.parse(nascimento, dataFormatada);
-        int numero = Integer.parseInt(JOptionPane.showInputDialog("Numero do Candidato:"));
-        String partido = JOptionPane.showInputDialog("Partido do Candidato:");
+        try {
+            String nome = JOptionPane.showInputDialog("Nome do Candidato:");
+            String cpf = JOptionPane.showInputDialog("CPF do Candidato:");
+            String nascimento = JOptionPane.showInputDialog("Nascimento do Candidato (dd/mm/aaaa):");
+            LocalDate dataNasc = LocalDate.parse(nascimento, dataFormatada);
+            int numero = Integer.parseInt(JOptionPane.showInputDialog("Numero do Candidato:"));
+            String partido = JOptionPane.showInputDialog("Partido do Candidato:");
 
-        Candidato candidato = new Candidato(nome, cpf, dataNasc, numero, partido);
-        urna.cadastraCandidato(candidato);
+            Candidato candidato = new Candidato(nome, cpf, dataNasc, numero, partido);
+            urna.cadastraCandidato(candidato);
 
-        JOptionPane.showMessageDialog(null, "Candidato cadastrado com sucesso!\n");
+            JOptionPane.showMessageDialog(null, "Candidato cadastrado com sucesso!\n");
+        }catch (IllegalArgumentException err) {
+            JOptionPane.showMessageDialog(null,err.getMessage(), "Dados do Candidato inválidos.", JOptionPane.WARNING_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Erro ao processar os dados: " + e.getMessage(), "Erro",JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     private static void cadastrarEleitor(List<Eleitor> eleitores) {
