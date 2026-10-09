@@ -35,7 +35,7 @@ public abstract class Pessoa {
         if(!formatedCPF.matches("\\d{11}")){
             throw new IllegalArgumentException("O cpf deve conter exatamente 11 dígitos");
         }
-        this.CPF = CPF;
+        this.CPF = formatedCPF;
     }
     public String getNome() {
         return nome;
