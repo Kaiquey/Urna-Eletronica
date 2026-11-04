@@ -2,13 +2,13 @@ name: Compile App
 
 on:
   push:
-    branches: [ main ]
-     tags:
-      - 'v*' # Dispara apenas quando você envia uma tag (ex: v1.0.0, v1.0.1)
+    branches: [ '**' ]
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 permissions:
-  contents: write # Obrigatório para que o workflow tenha permissão de criar a Release
+  contents: write
 
 jobs:
   build:
@@ -19,10 +19,24 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configurar o JDK
+        if: ${{ !env.ACT }}
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+
+      - name: Conferir configuração Firebase
+        shell: powershell
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:FIREBASE_API_KEY)) {
+            throw 'Configure o GitHub Actions secret FIREBASE_API_KEY.'
+          }
+          if ([string]::IsNullOrWhiteSpace($env:FIREBASE_DATABASE_URL)) {
+            throw 'Configure o GitHub Actions secret FIREBASE_DATABASE_URL.'
+          }
           
       - name: Gerar o Gradle Wrapper
         shell: powershell
@@ -31,20 +45,48 @@ jobs:
       - name: Dar permissão e rodar o Gradle para gerar o executável
         shell: powershell
         run: .\gradlew.bat createExe
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+
+      - name: Empacotar executável e dados dos candidatos
+        shell: powershell
+        run: |
+          $packageDir = "${{ runner.temp }}\urna-eletronica"
+          New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
+          Copy-Item "build/launch4j/Urna-Eletronica.exe" $packageDir
+          Copy-Item "build/launch4j/lib" $packageDir -Recurse
+          Copy-Item "output_candidatos" $packageDir -Recurse
+          Compress-Archive -Path "$packageDir\*" -DestinationPath "build/Urna-Eletronica.zip" -Force
+
+      - name: Definir identificador do release
+        id: release
+        shell: powershell
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $tag = "${{ github.ref_name }}"
+            $name = "Release $tag"
+          } else {
+            $tag = "build-${{ github.sha }}"
+            $name = "Build ${{ github.sha }}"
+          }
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "name=$name" >> $env:GITHUB_OUTPUT
         
-      - name: Salvar o .exe como artefato
+      - name: Salvar o pacote como artefato
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v4
         with:
-          name: meu-executavel
-          path: build/launch4j/*.exe
+          name: Urna-Eletronica
+          path: build/Urna-Eletronica.zip
         
       - name: Publicar no GitHub Releases
+        if: ${{ !env.ACT }}
         uses: softprops/action-gh-release@v2
         with:
-          files: build/launch4j/Urna-Eletronica.exe
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          files: build/Urna-Eletronica.zip
+          tag_name: ${{ steps.release.outputs.tag }}
+          name: ${{ steps.release.outputs.name }}
           draft: false
           prerelease: false
         env:
