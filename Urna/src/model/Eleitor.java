@@ -27,7 +27,7 @@ public class Eleitor extends Pessoa {
         if(this.status == StatusEleitoral.JA_Votei){
             throw new IllegalStateException("Eleitor ja realizou voto nessa sessão!!");
         }
-        this.status = StatusEleitoral.APTO;
+        this.status = StatusEleitoral.JA_Votei;
     }
 
     public StatusEleitoral getStatus(){
@@ -45,10 +45,10 @@ public class Eleitor extends Pessoa {
         if(tituloEleitor == null || tituloEleitor.isBlank()){
         throw new IllegalArgumentException("O titulo de eleitor é obrigatório.");
         }
-        String format = tituloEleitor.trim();
+        String format = tituloEleitor.replaceAll("[^0-9]", "");
         if(!format.matches("\\d{12}")){
-            throw new IllegalArgumentException("O título de eleitor deve conter apenas 12 digitos.");
+            throw new IllegalArgumentException("O título de eleitor deve conter apenas 12 dígitos.");
         }
-        this.tituloEleitor = tituloEleitor;
+        this.tituloEleitor = format;
     }
 }
