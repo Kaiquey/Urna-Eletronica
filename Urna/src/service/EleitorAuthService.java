@@ -103,6 +103,15 @@ public final class EleitorAuthService {
                 ELEITORES_PATH + "/" + currentEleitor.id(), tipoVoto.campoVotacao);
     }
 
+    /** Consulta se o eleitor atual já votou na categoria informada. */
+    public synchronized boolean jaVotou(TipoVoto tipoVoto) throws IOException, InterruptedException {
+        requireAdminSession();
+        if (currentEleitor == null) throw new IllegalStateException("O eleitor precisa estar logado.");
+        JsonElement result = firebase.readJson(ELEITORES_PATH + "/" + currentEleitor.id());
+        if (result == null || !result.isJsonObject()) throw invalidCredentials();
+        return readBoolean(result.getAsJsonObject(), tipoVoto.campoVotacao);
+    }
+
     public synchronized boolean isEleitorSignedIn() {
         return currentEleitor != null && firebase.isAdminSignedIn();
     }
