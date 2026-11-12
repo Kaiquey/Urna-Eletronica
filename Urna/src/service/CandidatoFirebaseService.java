@@ -95,6 +95,26 @@ public final class CandidatoFirebaseService {
         return longValue(updated.getAsJsonObject(), VOTE_COUNT_FIELD, -1, candidateKey);
     }
 
+    /** Registra voto branco ou nulo em contadores separados por cargo. */
+    public long incrementarVotoEspecial(EleitorAuthService.TipoVoto tipoVoto, boolean branco)
+            throws IOException, InterruptedException {
+        requireVotingSession();
+        if (tipoVoto == null) throw new IllegalArgumentException("A categoria do voto é obrigatória.");
+        String path = "votos_especiais/" + tipoVoto.name().toLowerCase(java.util.Locale.ROOT);
+        String field = branco ? "branco" : "nulo";
+        JsonObject initial = new JsonObject();
+        initial.addProperty("branco", 0);
+        initial.addProperty("nulo", 0);
+        try { firebase.writeJsonIfAbsent(path, initial); }
+        catch (IllegalArgumentException alreadyExists) { /* Contadores já inicializados. */ }
+        if (!eleitorAuth.marcarVoto(tipoVoto)) {
+            throw new IllegalStateException("O eleitor já registrou voto nesta categoria.");
+        }
+        JsonElement updated = firebase.incrementJsonNumber(path, field);
+        if (updated == null || !updated.isJsonObject()) throw new IOException("Falha ao registrar voto especial.");
+        return longValue(updated.getAsJsonObject(), field, -1, path);
+    }
+
     private static boolean cargoMatches(EleitorAuthService.TipoVoto tipoVoto, String cargo) {
         String normalized = Normalizer.normalize(cargo, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}+", "").toLowerCase(java.util.Locale.ROOT);

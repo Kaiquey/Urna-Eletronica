@@ -63,7 +63,7 @@ public final class UrnaView {
     private final StringBuilder numberInput = new StringBuilder();
     private JScrollPane candidateMenu;
     private JPanel votedOptionsPanel;
-    private boolean candidateConfirmed;
+    private String specialVote;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new UrnaView().start());
@@ -253,10 +253,11 @@ public final class UrnaView {
         });
         display.add(candidatePortrait, BorderLayout.EAST);
         screenAndActions.add(display, BorderLayout.CENTER);
-        JPanel actions = new JPanel(new GridLayout(2, 1, 0, 10)); actions.setOpaque(false); actions.setPreferredSize(new Dimension(155, 190));
+        JPanel actions = new JPanel(new GridLayout(3, 1, 0, 8)); actions.setOpaque(false); actions.setPreferredSize(new Dimension(155, 230));
         JButton red = button("CORRIGIR", new Color(194, 66, 65)); red.setFont(new Font("SansSerif", Font.BOLD, 13)); red.setBorder(new EmptyBorder(8, 8, 8, 8)); red.addActionListener(e -> resetNumber());
         JButton green = button("CONFIRMAR", GREEN); green.setFont(new Font("SansSerif", Font.BOLD, 13)); green.setBorder(new EmptyBorder(8, 8, 8, 8)); green.addActionListener(e -> confirmOrSubmitVote());
-        actions.add(red); actions.add(green); screenAndActions.add(actions, BorderLayout.EAST);
+        JButton blank = button("BRANCO", Color.WHITE); blank.setForeground(Color.BLACK); blank.setFont(new Font("SansSerif", Font.BOLD, 13)); blank.addActionListener(e -> { numberInput.setLength(0); renderBallotDisplay(null); specialVote = "BRANCO"; selectedCandidate = null; candidateDetails.setText("Voto em branco"); numberPrompt.setText("Confirme seu voto"); voteButton.setText("CONFIRMAR"); voteButton.setEnabled(true); });
+        actions.add(red); actions.add(green); actions.add(blank); screenAndActions.add(actions, BorderLayout.EAST);
         keypad.add(screenAndActions, BorderLayout.NORTH);
         JPanel keys = new JPanel(new GridLayout(4, 3, 5, 5)); keys.setOpaque(false);
         keys.setPreferredSize(new Dimension(430, 340));
@@ -286,34 +287,43 @@ public final class UrnaView {
     }
 
     private void updateNumberDisplay() {
-        renderBallotDisplay(null);
-        selectedCandidate = null; candidateConfirmed = false;
+        specialVote = null; selectedCandidate = null;
+        CandidatoFirebaseService.CandidatoData match = numberInput.length() == 2 ? candidatesForBallot.stream().filter(c -> c.numero() == Integer.parseInt(numberInput.toString())).findFirst().orElse(null) : null;
+        renderBallotDisplay(match);
+        if (numberInput.length() == 1) {
+            String prefix = numberInput.toString();
+            String possibilities = candidatesForBallot.stream().filter(c -> Integer.toString(c.numero()).startsWith(prefix))
+                    .map(c -> c.partido() + " — " + c.nome()).distinct().reduce((a, b) -> a + "   |   " + b).orElse("Nenhum candidato");
+            candidateDetails.setText(possibilities);
+        }
+        if (numberInput.length() == 2 && match == null) { specialVote = "NULO"; candidateDetails.setText("Voto nulo"); }
         voteButton.setText("CONFIRMA"); voteButton.setEnabled(!numberInput.isEmpty());
     }
 
     private void resetNumber() { numberInput.setLength(0); updateNumberDisplay(); }
 
     private void chooseNumber() {
+        if (numberInput.length() != 2) { showError("Digite os dois números do candidato."); return; }
         try {
             int number = Integer.parseInt(numberInput.toString());
             var match = candidatesForBallot.stream().filter(c -> c.numero() == number).findFirst();
-            if (match.isEmpty()) { showError("Não há candidato com esse número para o cargo selecionado."); return; }
+            if (match.isEmpty()) { specialVote = "NULO"; selectedCandidate = null; candidateDetails.setText("Voto nulo"); return; }
+            specialVote = null;
             selectedCandidate = match.get().id();
             renderBallotDisplay(match.get()); voteButton.setEnabled(true);
         } catch (NumberFormatException ex) { showError("Digite o número do candidato."); }
     }
 
     private void confirmOrSubmitVote() {
-        if (!candidateConfirmed) {
+        if (selectedCandidate == null && specialVote == null) {
+            if (numberInput.length() != 2) { showError("Digite os dois números do candidato."); return; }
             chooseNumber();
-            if (selectedCandidate != null) { candidateConfirmed = true; voteButton.setText("CONFIRMA NOVAMENTE"); }
-            return;
         }
-        submitVote();
+        if (selectedCandidate != null || specialVote != null) submitVote();
     }
 
     private void loadCandidates() {
-        selectedCandidate = null; candidateConfirmed = false; numberInput.setLength(0); renderBallotDisplay(null); voteButton.setText("CONFIRMA"); voteButton.setEnabled(false);
+        selectedCandidate = null; specialVote = null; numberInput.setLength(0); renderBallotDisplay(null); voteButton.setText("CONFIRMAR"); voteButton.setEnabled(false);
         EleitorAuthService.TipoVoto type = ballot[ballotIndex];
         ballotTitle.setText((type == EleitorAuthService.TipoVoto.PRESIDENTE ? "Presidente" : "Governador(a)") + " — " + voterName);
         progress.setValue(ballotIndex); progress.setString("Etapa " + (ballotIndex + 1) + " de 2");
@@ -330,22 +340,13 @@ public final class UrnaView {
                             .filter(c -> normalize(c.cargo()).startsWith(wanted)).toList();
                     candidatesForBallot = list;
                     if (list.isEmpty()) candidateList.add(new JLabel("Nenhum candidato cadastrado para este cargo."));
-                    ButtonGroup group = new ButtonGroup();
                     for (var candidate : list) {
-                        JRadioButton choice = new JRadioButton("  " + candidate.numero() + "   " + candidate.nome() + "   ·   " + candidate.partido());
-                        choice.setIcon(null);
+                        JLabel choice = new JLabel("  " + candidate.numero() + "   " + candidate.nome() + "   ·   " + candidate.partido());
                         choice.setHorizontalAlignment(SwingConstants.LEFT);
-                        choice.setIconTextGap(12);
-                        choice.setFont(new Font("SansSerif", Font.PLAIN, 17)); choice.setOpaque(true); choice.setBackground(Color.WHITE);
-                        choice.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(225,231,237)), new EmptyBorder(18, 16, 18, 16)));
-                        choice.setAlignmentX(Component.LEFT_ALIGNMENT); choice.setMaximumSize(new Dimension(Integer.MAX_VALUE, 68));
-                        choice.addActionListener(e -> {
-                            selectedCandidate = null; candidateConfirmed = false;
-                            numberInput.setLength(0); numberInput.append(candidate.numero());
-                            renderBallotDisplay(candidate);
-                            voteButton.setEnabled(true);
-                        });
-                        group.add(choice); candidateList.add(choice); candidateList.add(Box.createVerticalStrut(10));
+                        choice.setFont(new Font("SansSerif", Font.PLAIN, 15)); choice.setOpaque(true); choice.setBackground(Color.WHITE);
+                        choice.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(225,231,237)), new EmptyBorder(10, 10, 10, 10)));
+                        choice.setAlignmentX(Component.LEFT_ALIGNMENT); choice.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+                        candidateList.add(choice); candidateList.add(Box.createVerticalStrut(8));
                     }
                 } catch (Exception ex) { candidateList.add(new JLabel("Falha ao carregar candidatos: " + message(ex))); }
                 candidateList.revalidate(); candidateList.repaint();
@@ -360,7 +361,7 @@ public final class UrnaView {
                             var icons = get();
                             candidateImages = icons;
                             for (Component component : candidateList.getComponents()) {
-                                if (component instanceof JRadioButton choice) {
+                                if (component instanceof JLabel choice && !choice.getText().isBlank()) {
                                     var candidate = candidatesForBallot.stream().filter(c -> choice.getText().contains(c.nome())).findFirst().orElse(null);
                                     if (candidate != null) choice.setIcon(squarePortrait(icons.get(candidate.id()), 64));
                                 }
@@ -429,13 +430,14 @@ public final class UrnaView {
     }
 
     private void submitVote() {
-        if (selectedCandidate == null) return;
+        if (selectedCandidate == null && specialVote == null) return;
         voteButton.setEnabled(false); voteButton.setText("Registrando…");
         String key = selectedCandidate; EleitorAuthService.TipoVoto type = ballot[ballotIndex];
-        String selectedName = candidatesForBallot.stream().filter(c -> c.id().equals(key)).findFirst()
+        String mode = specialVote;
+        String selectedName = mode != null ? ("Voto " + mode.toLowerCase(Locale.ROOT)) : candidatesForBallot.stream().filter(c -> c.id().equals(key)).findFirst()
                 .map(c -> c.numero() + " — " + c.nome() + " (" + c.partido() + ")").orElse(key);
         new SwingWorker<Long, Void>() {
-            @Override protected Long doInBackground() throws Exception { return candidates.incrementarVoto(key, type); }
+            @Override protected Long doInBackground() throws Exception { return mode == null ? candidates.incrementarVoto(key, type) : candidates.incrementarVotoEspecial(type, "BRANCO".equals(mode)); }
             @Override protected void done() {
                 voteButton.setText("Confirmar voto");
                 try {
