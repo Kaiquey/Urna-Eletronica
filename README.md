@@ -1,12 +1,10 @@
 # Urna Eletrônica
-<div align="center">
 🗳️ Urna Eletrônica
 
 Simulador de urna eletrônica desktop com votação para Presidente e Governador(a)
 
 
 
-</div>
 📑 Sumário
 
 ✨ Funcionalidades
