@@ -6,9 +6,9 @@ Simulador de urna eletrônica desktop com votação para Presidente e Governador
 
 
 📑 Sumário
-  ✨ Funcionalidades
-  🛠️ Tecnologias
-  📁 Estrutura
+✨ Funcionalidades
+🛠️ Tecnologias
+📁 Estrutura
 👥 Candidatos
 📋 Pré-requisitos
 ⚙️ Configuração
