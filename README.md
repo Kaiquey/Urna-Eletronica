@@ -8,16 +8,27 @@ Simulador de urna eletrônica desktop com votação para Presidente e Governador
 
 </div>
 📑 Sumário
+
 ✨ Funcionalidades
+
 🛠️ Tecnologias
+
 📁 Estrutura
+
 👥 Candidatos
+
 📋 Pré-requisitos
+
 ⚙️ Configuração
+
 📥 Importar candidatos
+
 🚀 Compilar e executar
+
 🧪 Testes
+
 🔄 CI/CD
+
 📜 Regras de negócio
 
 
