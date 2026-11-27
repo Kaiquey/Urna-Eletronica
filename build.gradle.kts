@@ -2,13 +2,20 @@ import java.util.Properties
 
 plugins {
     java
-    id("edu.sc.seis.launch4j") version "3.0.5"
+    id("edu.sc.seis.launch4j") version "4.0.0"
 }
 
 launch4j {
     mainClassName = "view.UrnaView"
     outfile = "Urna-Eletronica.exe"
     headerType = "gui"
+    bundledJrePath = "jre"
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
 
 repositories {
