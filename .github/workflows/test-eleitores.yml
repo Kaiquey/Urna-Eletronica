@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
 
       - name: Conferir secrets do Firebase
         shell: powershell
@@ -40,10 +40,6 @@ jobs:
           if ($missing.Count -gt 0) {
             throw "Configure estes GitHub Actions secrets para executar o teste: $($missing -join ', ')"
           }
-
-      - name: Gerar o Gradle Wrapper
-        shell: powershell
-        run: gradle wrapper --gradle-version 8.7
 
       - name: Executar teste de integração do eleitor
         shell: powershell

@@ -63,3 +63,37 @@ sourceSets {
 tasks.processResources {
     dependsOn(generateFirebaseRuntimeConfig)
 }
+
+val bundledRuntimeDir = layout.buildDirectory.dir("bundled-runtime")
+val java21Launcher = javaToolchains.launcherFor {
+    languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+val createBundledRuntime = tasks.register<Exec>("createBundledRuntime") {
+    val jlinkExecutable = java21Launcher.map { it.metadata.installationPath.file("bin/jlink.exe").asFile }
+    inputs.property("javaHome", java21Launcher.map { it.metadata.installationPath.asFile.absolutePath })
+    outputs.dir(bundledRuntimeDir)
+
+    doFirst {
+        bundledRuntimeDir.get().asFile.deleteRecursively()
+        commandLine(
+            jlinkExecutable.get().absolutePath,
+            "--add-modules", "java.desktop,java.net.http",
+            "--strip-debug",
+            "--no-man-pages",
+            "--no-header-files",
+            "--compress=2",
+            "--output", bundledRuntimeDir.get().asFile.absolutePath
+        )
+    }
+}
+
+tasks.named("createExe") {
+    dependsOn(createBundledRuntime)
+}
+
+tasks.register<Copy>("packageBundledRuntime") {
+    dependsOn("createExe", createBundledRuntime)
+    from(bundledRuntimeDir)
+    into(layout.buildDirectory.dir("launch4j/jre"))
+}

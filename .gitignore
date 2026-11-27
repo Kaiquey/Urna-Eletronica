@@ -26,6 +26,7 @@ replay_pid*
 .idea
 Urna/Urna.iml
 .gradle
+.gradle-user
 build
 gerador_figurinhas
 .env

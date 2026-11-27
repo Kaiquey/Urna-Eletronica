@@ -16,6 +16,7 @@ jobs:
 
     steps:
       - name: Checkout do código
+        if: ${{ !env.ACT }}
         uses: actions/checkout@v4
 
       - name: Configurar o JDK
@@ -23,7 +24,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Conferir configuração Firebase
         shell: powershell
@@ -38,13 +39,9 @@ jobs:
             throw 'Configure o GitHub Actions secret FIREBASE_DATABASE_URL.'
           }
           
-      - name: Gerar o Gradle Wrapper
+      - name: Gerar executável e runtime Java incluído
         shell: powershell
-        run: gradle wrapper --gradle-version 8.7
-      
-      - name: Dar permissão e rodar o Gradle para gerar o executável
-        shell: powershell
-        run: .\gradlew.bat createExe
+        run: .\gradlew.bat packageBundledRuntime
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
@@ -56,6 +53,7 @@ jobs:
           New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
           Copy-Item "build/launch4j/Urna-Eletronica.exe" $packageDir
           Copy-Item "build/launch4j/lib" $packageDir -Recurse
+          Copy-Item "build/launch4j/jre" $packageDir -Recurse
           Copy-Item "output_candidatos" $packageDir -Recurse
           Compress-Archive -Path "$packageDir\*" -DestinationPath "build/Urna-Eletronica.zip" -Force
 

@@ -257,3 +257,9 @@ O sistema segue as seguintes regras:
 Projeto desenvolvido como atividade acadêmica, com foco na aplicação prática de conceitos de programação orientada a objetos, desenvolvimento de interfaces gráficas, autenticação, persistência de dados e integração com serviços externos.
 
 **Urna Eletrônica — Simulando o processo democrático através da tecnologia.** 🗳️
+
+## Executar a versão compilada
+
+Baixe `Urna-Eletronica.zip` em Releases, extraia todo o conteúdo para uma pasta e abra `Urna-Eletronica.exe`. O pacote inclui o runtime Java e as bibliotecas da aplicação, então não é necessário instalar o JDK ou o JRE.
+
+Mantenha o executável na pasta extraída, ao lado das pastas `jre` e `lib`.
